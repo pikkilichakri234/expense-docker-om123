@@ -1,13 +1,10 @@
-
-FROM mysql:8.0.40
-
-# Do not hardcode sensitive information in Dockerfile
-# Instead, use a build argument or pass it as an environment variable during runtime
-ARG MYSQL_ROOT_PASSWORD
-ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-
-# Other configurations (create group, etc.)
+FROM mysql:8.0
+ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1
 RUN groupadd expense && \
-    useradd -m -g expense expense
-ADD scripts/*.sql /docker-entrypoint-initdb.d
+    useradd -g expense expense && \
+    chown -R expense:expense /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d
+COPY scripts/*.sql /docker-entrypoint-initdb.d
 USER expense
+    # MYSQL_DATABASE=transactions \
+    # MYSQL_USER=expense \
+    # MYSQL_PASSWORD=ExpenseApp@1
