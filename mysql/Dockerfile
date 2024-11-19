@@ -1,10 +1,13 @@
 FROM mysql:8.0
-ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1
-RUN groupadd expense && \
-    useradd -g expense expense && \
+
+# Use a secret for the MySQL root password
+RUN groupadd -r expense && \
+    useradd -r -g expense expense && \
+    mkdir -p /docker-entrypoint-initdb.d && \
     chown -R expense:expense /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d
-COPY scripts/*.sql /docker-entrypoint-initdb.d
+
+COPY scripts/*.sql /docker-entrypoint-initdb.d/
+
 USER expense
-    # MYSQL_DATABASE=transactions \
-    # MYSQL_USER=expense \
-    # MYSQL_PASSWORD=ExpenseApp@1
+
+EXPOSE 3306
