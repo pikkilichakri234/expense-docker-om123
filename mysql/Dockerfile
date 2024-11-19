@@ -6,7 +6,7 @@ RUN groupadd -r expense && \
     mkdir -p /docker-entrypoint-initdb.d && \
     chown -R expense:expense /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d
 
-COPY scripts/*.sql /docker-entrypoint-initdb.d/
+ADD scripts/*.sql /docker-entrypoint-initdb.d/
 
 USER expense
 
