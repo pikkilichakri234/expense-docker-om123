@@ -1,10 +1,17 @@
+
 FROM mysql:8.0.40
-ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1
+
+# Do not hardcode sensitive information in Dockerfile
+# Instead, use a build argument or pass it as an environment variable during runtime
+ARG MYSQL_ROOT_PASSWORD
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+# Other configurations (create group, etc.)
 RUN groupadd expense && \
-    useradd -g expense expense && \
-    chown -R expense:expense /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d
-ADD scripts/*.sql /docker-entrypoint-initdb.d
-USER expense
-    # MYSQL_DATABASE=transactions \
-    # MYSQL_USER=expense \
-    # MYSQL_PASSWORD=ExpenseApp@1
+    useradd -m -g expense expense
+
+# Additional setup (e.g., copying app files, setting permissions)
+COPY ./myapp /app
+WORKDIR /app
+# Expose the necessary port for the MySQL container
+EXPOSE 3306
