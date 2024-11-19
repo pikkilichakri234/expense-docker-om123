@@ -9,9 +9,5 @@ ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 # Other configurations (create group, etc.)
 RUN groupadd expense && \
     useradd -m -g expense expense
-
-# Additional setup (e.g., copying app files, setting permissions)
-COPY ./myapp /app
-WORKDIR /app
-# Expose the necessary port for the MySQL container
-EXPOSE 3306
+ADD scripts/*.sql /docker-entrypoint-initdb.d
+USER expense
