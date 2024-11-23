@@ -1,4 +1,4 @@
-FROM mysql:oraclelinux9
+FROM mysql:8.0
 
 # Set the root password and other environment variables
 ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1 \
